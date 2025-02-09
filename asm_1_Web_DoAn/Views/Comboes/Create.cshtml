@@ -1,0 +1,49 @@
+﻿@model asm_1_Web_DoAn.Models.Combo
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create Combo</h2>
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="ComboName"></label>
+        <input asp-for="ComboName" class="form-control" />
+        <span asp-validation-for="ComboName" class="text-danger"></span>
+    </div>
+
+    <!-- Ẩn trường ComboPrice nếu không muốn người dùng nhập -->
+    <div class="form-group" style="display:none;">
+        <label asp-for="ComboPrice"></label>
+        <input asp-for="ComboPrice" class="form-control" />
+        <span asp-validation-for="ComboPrice" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ComboDescription"></label>
+        <textarea asp-for="ComboDescription" class="form-control"></textarea>
+        <span asp-validation-for="ComboDescription" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="ImageUrlcombo">Upload Image</label>
+        <input type="file" name="ImageUrlcombo" class="form-control" accept="image/*" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Status"></label>
+        <select asp-for="Status" class="form-control" asp-items="Html.GetEnumSelectList<asm_1_Web_DoAn.Models.Status>()">
+            <option value="Active">Active</option>
+        </select>
+        <span asp-validation-for="Status" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

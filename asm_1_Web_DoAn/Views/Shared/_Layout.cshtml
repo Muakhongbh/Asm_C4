@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - ASM_PH53971</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">Trang Chủ</a>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                @if (ViewContext.HttpContext.Session.GetString("Username") != null)
+                {
+                    <li class="nav-item">
+                        <span class="navbar-text mr-2">
+                            Xin chào, @ViewContext.HttpContext.Session.GetString("Username")!
+                        </span>
+                    </li>
+                    @if (ViewContext.HttpContext.Session.GetString("Role") != "Admin")
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link btn btn-outline-primary mx-2" href="@Url.Action("Index", "GioHangChiTiet")">
+                                <span>🛒 Xem Giỏ Hàng</span>
+                                <span class="badge badge-success">@ViewData["CartItemCount"]</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link btn btn-outline-info mx-2" href="@Url.Action("UserOrders", "Orders")">
+                                <span>📦 Xem Đơn Hàng</span>
+                            </a>
+                        </li>
+                    }
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-outline-danger" href="@Url.Action("Logout", "Account")">Đăng xuất</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a href="@Url.Action("Login", "Account")" class="btn btn-warning mx-2">Đăng nhập</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("Register", "Account")" class="btn btn-warning mx-2">Đăng ký</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        @RenderBody()
+    </div>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

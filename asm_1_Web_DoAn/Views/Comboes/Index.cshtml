@@ -1,0 +1,78 @@
+﻿@model IEnumerable<asm_1_Web_DoAn.Models.Combo>
+
+@{
+    ViewData["Title"] = "Quản Lý Combo";
+}
+
+<h1 class="text-center my-4">Quản Lý Combo</h1>
+
+<div class="container">
+    <div class="row mb-3">
+        <div class="col-md-12 text-right">
+            <a  asp-action="Create" class="btn btn-outline-success">Tạo Combo Mới</a>
+            <a  asp-action="Index" asp-controller="FoodItems" class="btn btn-outline-info mx-2">Quản Lý Đồ Ăn</a>
+            <a  asp-action="Index" asp-controller="Users" class="btn btn-outline-primary mx-2">Quản Lý Tài Khoản</a>
+            <a  asp-action="Index" asp-controller="OrderDetails" class="btn btn-outline-danger mx-2">Quản Lý Đơn Hàng</a>
+            <a  asp-action="Index" asp-controller="ComboFoodItems" class="btn btn-outline-warning mx-2">Quản Lý Combo Chi Tiết</a>
+        </div>
+    </div>
+
+    <form asp-action="Index" method="get" class="mb-4">
+        <div class="form-row">
+            <div class="form-group col-md-3">
+                <label for="comBoName">Tên Combo:</label>
+                <input type="text" id="comBoName" name="comBoName" class="form-control" value="@ViewBag.ComBoName" />
+            </div>
+            <div class="form-group col-md-3">
+                <label for="giaCombomin">Giá Tối Thiểu:</label>
+                <input type="number" id="giaCombomin" name="giaCombomin" class="form-control" value="@ViewBag.ComBoMixn" />
+            </div>
+            <div class="form-group col-md-3">
+                <label for="giaComBomax">Giá Tối Đa:</label>
+                <input type="number" id="giaComBomax" name="giaComBomax" class="form-control" value="@ViewBag.ComboMax" />
+            </div>
+            <div class="form-group col-md-3">
+                <label for="moTaComBo">Mô Tả:</label>
+                <input type="text" id="moTaComBo" name="moTaComBo" class="form-control" value="@ViewBag.MoTa" />
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Tìm Kiếm</button>
+    </form>
+
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.First().ComboName)</th>
+                <th>@Html.DisplayNameFor(model => model.First().ComboPrice)</th>
+                <th>@Html.DisplayNameFor(model => model.First().ImageUrlcombo)</th>
+                <th>@Html.DisplayNameFor(model => model.First().ComboDescription)</th>
+                <th>@Html.DisplayNameFor(model => model.First().Status)</th>
+                <th>Hành Động</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.ComboName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.ComboPrice)</td>
+                    <td>
+                        <img src="@Url.Content(item.ImageUrlcombo)" alt="@item.ComboName" class="img-thumbnail" style="max-width: 100px; max-height: 100px;" />
+                    </td>
+                    <td>@Html.DisplayFor(modelItem => item.ComboDescription)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Status)</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.ComboId" class="btn btn-warning btn-sm">Sửa</a>
+                        <a asp-action="Details" asp-route-id="@item.ComboId" class="btn btn-info btn-sm">Chi Tiết</a>
+                        <a asp-action="Delete" asp-route-id="@item.ComboId" class="btn btn-danger btn-sm">Xóa</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @section Scripts {
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+    }

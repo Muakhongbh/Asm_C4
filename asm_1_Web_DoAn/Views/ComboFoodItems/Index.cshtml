@@ -1,0 +1,88 @@
+﻿@model IEnumerable<dynamic>
+@{
+    ViewData["Title"] = "Danh sách ComboFoodItem";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center">Danh sách ComboFoodItem</h2>
+
+    <form asp-action="Index" method="get" class="mb-4">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="comboName">Tên Combo:</label>
+                    <input type="text" class="form-control" id="comboName" name="comboName" value="@ViewBag.ComboName" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="foodName">Tên món ăn:</label>
+                    <input type="text" class="form-control" id="foodName" name="foodName" value="@ViewBag.FoodName" />
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="minQuantity">Số lượng tối thiểu:</label>
+                    <input type="number" class="form-control" id="minQuantity" name="minQuantity" value="@ViewBag.MinQuanTiti" />
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label for="maxQuantity">Số lượng tối đa:</label>
+                    <input type="number" class="form-control" id="maxQuantity" name="maxQuantity" value="@ViewBag.MaxQuanTiti" />
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+    </form>
+
+    <div class="mb-3">
+        <form  asp-action="Create" method="get" style="display:inline;">
+            <button type="submit" class="btn btn-outline-success">Tạo Mới</button>
+        </form>
+        <form  asp-action="Index" asp-controller="Comboes" method="get" style="display:inline;">
+            <button type="submit" class="btn btn-outline-info mx-2">Quản lý combo</button>
+        </form>
+        <form asp-action="Index" asp-controller="Users" method="get" style="display:inline;">
+            <button type="submit" class="btn btn-outline-primary mx-2">Quản lý tài khoản</button>
+        </form>
+        <form  asp-action="Index" asp-controller="Orders" method="get" style="display:inline;">
+            <button type="submit" class="btn btn-outline-danger mx-2">Quản lý đơn hàng</button>
+        </form>
+        <form  asp-action="Index" asp-controller="FoodItems" method="get" style="display:inline;">
+            <button type="submit" class="btn btn-outline-danger mx-2">Quản lý đồ ăn</button>
+        </form>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Tên Combo</th>
+                <th>Hình ảnh Combo</th>
+                <th>Giá Combo</th>
+                <th>Tên món ăn</th>
+                <th>Hình ảnh món ăn</th>
+                <th>Giá món ăn</th>
+                <th>Số lượng</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ComboName</td>
+                    <td><img src="@item.ImageUrlcombo" alt="@item.ComboName" class="img-thumbnail" style="width: 50px;" /></td>
+                    <td>@item.ComboPrice.ToString("C")</td>
+                    <td>@item.FoodName</td>
+                    <td><img src="@item.ImageUrl" alt="@item.FoodName" class="img-thumbnail" style="width: 50px;" /></td>
+                    <td>@item.Price.ToString("C")</td>
+                    <td>@item.Quantity</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Bootstrap JS (nếu cần) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>

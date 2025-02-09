@@ -1,0 +1,57 @@
+﻿@model IEnumerable< asm_1_Web_DoAn.Models.ComboFoodItem>
+
+@{
+    var combo = (asm_1_Web_DoAn.Models.Combo)ViewData["Combo"];
+    var foodItems = (IEnumerable<asm_1_Web_DoAn.Models.FoodItem>)ViewData["FoodItems"];
+}
+
+<h2>Chỉnh sửa Combo</h2>
+
+<form asp-action="Edit" method="post">
+    <div class="form-group">
+        <label>Combo: @combo.ComboName</label>
+        <input type="hidden" name="id" value="@combo.ComboId" />
+    </div>
+
+    <h3>Thông tin Combo đã chọn:</h3>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Tên Combo</th>
+                <th>Hình ảnh</th>
+                <th>Giá</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@combo.ComboName</td>
+                <td><img src="@combo.ImageUrlcombo" alt="@combo.ComboName" style="width: 50px;" /></td>
+                <td>@combo.ComboPrice.ToString("C")</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Chọn FoodItems:</h3>
+    <div class="form-group">
+        @for (int i = 0; i < foodItems.Count(); i++)
+        {
+            var foodItem = foodItems.ElementAt(i);
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="selectedFoodItems" value="@foodItem.FoodItemId" id="foodItem_@foodItem.FoodItemId"
+                @(Model.Any(cfi => cfi.FoodItemId == foodItem.FoodItemId) ? "checked" : "") />
+                <label class="form-check-label" for="foodItem_@foodItem.FoodItemId">
+                    <img src="@foodItem.ImageUrl" alt="@foodItem.FoodName" style="width: 50px;" />
+                    @foodItem.FoodName - @foodItem.Price.ToString("C")
+                </label>
+                <input type="number" name="quantities[@foodItem.FoodItemId]" min="1" class="form-control" placeholder="Số lượng"
+                       value="@(Model.FirstOrDefault(cfi => cfi.FoodItemId == foodItem.FoodItemId)?.Quantity ?? 1)" />
+            </div>
+        }
+    </div>
+
+    <button type="submit" class="btn btn-primary">Lưu Thay Đổi</button>
+</form>
+
+<form asp-action="Index" asp-controller="ComboFoodItems" method="get" style="display:inline;">
+    <button type="submit" class="btn btn-outline-danger my-3 mx-2">Quay lại</button>
+</form>

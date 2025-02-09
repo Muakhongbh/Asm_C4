@@ -1,0 +1,140 @@
+﻿@using asm_1_Web_DoAn.Models
+@model IEnumerable<asm_1_Web_DoAn.Models.FoodItem>
+
+@{
+    ViewData["Title"] = "Food Items";
+}
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Food Items</h1>
+    <form asp-action="Index" method="get" class="mb-3">
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <div class="form-group">
+                    <label for="foodName">Tên món ăn</label>
+                    <input type="text" id="foodName" name="foodName" class="form-control" placeholder="Nhập tên món ăn" value="@ViewBag.FoodName" />
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="form-group">
+                    <label for="minPrice">Giá tối thiểu</label>
+                    <input type="number" id="minPrice" name="minPrice" class="form-control" placeholder="Nhập giá tối thiểu" value="@ViewBag.MinPrice" />
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="form-group">
+                    <label for="maxPrice">Giá tối đa</label>
+                    <input type="number" id="maxPrice" name="maxPrice" class="form-control" placeholder="Nhập giá tối đa" value="@ViewBag.MaxPrice" />
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="form-group">
+                    <label for="minQuantity">Số lượng tối thiểu</label>
+                    <input type="number" id="minQuantity" name="minQuantity" class="form-control" placeholder="Nhập số lượng tối thiểu" value="@ViewBag.MinQuantity" />
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="form-group">
+                    <label for="maxQuantity">Số lượng tối đa</label>
+                    <input type="number" id="maxQuantity" name="maxQuantity" class="form-control" placeholder="Nhập số lượng tối đa" value="@ViewBag.MaxQuantity" />
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="form-group">
+                    <label for="description">Mô tả</label>
+                    <input type="text" id="description" name="description" class="form-control" placeholder="Nhập mô tả" value="@ViewBag.Description" />
+                </div>
+            </div>
+            <div class="col-md-12">
+                <button class="btn btn-primary" type="submit">Tìm kiếm</button>
+            </div>
+        </div>
+    </form>
+
+    <form asp-action="Create" method="post" style="display:inline;">
+        <button type="submit" class="btn btn-outline-success my-3">Create New</button>
+    </form>
+
+    <form  asp-action="Index" asp-controller="Comboes" method="get" style="display:inline;">
+        <button type="submit" class="btn btn-outline-info my-3 mx-2">Quản lý combo</button>
+    </form>
+
+    <form  asp-action="Index" asp-controller="Users" method="get" style="display:inline;">
+        <button type="submit" class="btn btn-outline-primary my-3 mx-2">Quản lý tài khoản</button>
+    </form>
+
+    <form  asp-action="Index" asp-controller="Orders" method="get" style="display:inline;">
+        <button type="submit" class="btn btn-outline-danger my-3 mx-2">Quản lý đơn hàng</button>
+    </form>
+
+    <form  asp-action="Index" asp-controller="ComboFoodItems" method="get" style="display:inline;">
+        <button type="submit" class="btn btn-outline-danger my-3 mx-2">Quản lý combo chi tiết</button>
+    </form>
+
+    <table class="table table-striped table-hover">
+        <thead class="table-light">
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.FoodName)</th>
+                <th>@Html.DisplayNameFor(model => model.Price)</th>
+                <th>@Html.DisplayNameFor(model => model.FoodQuantity)</th>
+                <th>@Html.DisplayNameFor(model => model.Description)</th>
+                <th>@Html.DisplayNameFor(model => model.ImageUrl)</th>
+                <th>@Html.DisplayNameFor(model => model.Status)</th>
+                <th>@Html.DisplayNameFor(model => model.Category)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.FoodName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Price)</td>
+                    <td>@Html.DisplayFor(modelItem => item.FoodQuantity)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                    <td>
+                        <img src="@item.ImageUrl" alt="@item.FoodName" class="img-thumbnail" style="max-width: 100px;" />
+                    </td>
+                    <td>@Html.DisplayFor(modelItem => item.Status)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Category)</td>
+                    <td>
+                        <a class="btn btn-outline-warning btn-sm" asp-action="Edit" asp-route-id="@item.FoodItemId">Edit</a>
+                        <a class="btn btn-outline-info btn-sm" asp-action="Details" asp-route-id="@item.FoodItemId">Details</a>
+
+                        @if (item.Status == Status.Active)
+                        {
+                            <a class="btn btn-outline-danger btn-sm" asp-action="Delete" asp-route-id="@item.FoodItemId" onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
+                        }
+                        else if (item.Status == Status.Inactive)
+                        {
+                            <a class="btn btn-outline-success btn-sm" asp-action="Restore" asp-route-id="@item.FoodItemId" onclick="return confirm('Are you sure you want to restore this item?');">Restore</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+            {
+                <li class="page-item @(ViewBag.CurrentPage == i ? "active" : "")">
+                    <a class="page-link"
+                       asp-action="Index"
+                       asp-route-page="@i"
+                       asp-route-foodName="@ViewBag.FoodName"
+                       asp-route-minPrice="@ViewBag.MinPrice"
+                       asp-route-maxPrice="@ViewBag.MaxPrice"
+                       asp-route-minQuantity="@ViewBag.MinQuantity"
+                       asp-route-maxQuantity="@ViewBag.MaxQuantity"
+                       asp-route-description="@ViewBag.Description">
+                        @i
+                    </a>
+                </li>
+            }
+        </ul>
+    </nav>
+    <form asp-action="InactiveItems" method="get" style="display:inline;" class="my-3">
+        <button type="submit" class="btn btn-outline-warning my-3">Xem Món Ăn Không Hoạt Động</button>
+    </form>
+</div>

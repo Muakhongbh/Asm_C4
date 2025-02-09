@@ -1,0 +1,46 @@
+﻿@model IEnumerable<dynamic> 
+
+<h2>Danh sách chi tiết đơn hàng</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Mã đơn hàng</th>
+            <th>Tên người dùng</th>
+            <th>Ngày đặt</th>
+            <th>Trạng thái đơn</th>
+            <th>Tên món ăn</th>
+            <th>Tên combo</th>
+            <th>Số lượng</th>
+            <th>Giá đơn vị</th>
+            <th>Tổng giá</th>
+            <th>Hoạt động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.OrderDetailId</td>
+                <td>@item.Username</td>
+                <td>@item.OrderDate</td>
+                <td>@item.OrderStatus</td>
+                <td>@item.FoodName</td>
+                <td>@item.ComboName</td>
+                <td>@item.Quantity</td>
+                <td>@item.UnitPrice</td>
+                <td>@item.TotalPrice</td>
+                <td>
+                    @if (ViewBag.Role == "Admin")
+                    {
+                        <a asp-action="Details" asp-route-id="@item.OrderDetailId" class="btn btn-outline-success">Chi tiết</a>
+                    }
+                    else
+                    {
+                        <a asp-action="Details" asp-route-id="@item.OrderDetailId" class="btn btn-outline-info">Chi tiết</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

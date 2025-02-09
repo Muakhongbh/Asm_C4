@@ -1,0 +1,91 @@
+﻿@using asm_1_Web_DoAn.Models
+@model asm_1_Web_DoAn.Models.Order
+
+<div class="container mt-5">
+    <h2 class="mb-4">Order Details</h2>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h4>User Information</h4>
+        </div>
+        <div class="card-body">
+            <p><strong>Username:</strong> @Model.User.Username</p>
+            <p><strong>Phone:</strong> @Model.User.Phone</p>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h4>Order Information</h4>
+        </div>
+        <div class="card-body">
+            <p><strong>Order Id:</strong> @Model.OrderId</p>
+            <p><strong>Order Date:</strong> @Model.OrderDate.ToString("MM/dd/yyyy")</p>
+            <p>
+                <strong>Status:</strong>
+                <span class="badge
+                    @(Model.OrderStatus == OrderStatus.Pending ? "bg-warning" :
+                      Model.OrderStatus == OrderStatus.Approved ? "bg-info" :
+                      Model.OrderStatus == OrderStatus.Shipped ? "bg-primary" :
+                      Model.OrderStatus == OrderStatus.Canceled_Order ? "bg-danger" :
+                      Model.OrderStatus == OrderStatus.Completed ? "bg-success" :
+                      "bg-secondary")">
+                    @Model.OrderStatus.ToString()
+                </span>
+            </p>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h4>Order Details</h4>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Food Item</th>
+                        <th>Combo</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var detail in Model.OrderDetails)
+                    {
+                        <tr>
+                            <td>@detail.FoodItem?.FoodName ?? "N/A"</td>
+                            <td>@detail.Combos?.ComboName ?? "N/A"</td>
+                            <td>@detail.Quantity</td>
+                            <td>@(detail.FoodItem?.Price ?? detail.Combos?.ComboPrice)?.ToString("C") ?? "N/A"</td>
+                            <td>@detail.FoodItem?.Description ?? detail.Combos?.Description ?? "N/A"</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        @if (Model.OrderStatus == OrderStatus.Pending || Model.OrderStatus == OrderStatus.Approved)
+        {
+            <form method="post" asp-action="UpdateStatus" asp-route-id="@Model.OrderId">
+                <button type="submit" class="btn btn-primary" name="newStatus" value="Approved">Approve</button>
+                <button type="submit" class="btn btn-warning" name="newStatus" value="Shipped">Ship</button>
+                <button type="submit" class="btn btn-danger" name="newStatus" value="Canceled_Order">Cancel Order</button>
+            </form>
+            <form method="post" asp-action="CancelOrder" asp-route-id="@Model.OrderId" class="mt-2">
+                <button type="submit" class="btn btn-danger">Cancel Order</button>
+            </form>
+        }
+        else if (Model.OrderStatus == OrderStatus.Shipped || Model.OrderStatus == OrderStatus.Canceled_Order || Model.OrderStatus == OrderStatus.Completed)
+        {
+            <p class="text-danger">Order cannot be canceled at this stage.</p>
+        }
+    </div>
+
+    <div class="mt-4">
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </div>
+</div>

@@ -1,0 +1,63 @@
+﻿@model asm_1_Web_DoAn.Models.Combo
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit Combo</h1>
+
+<h4>Combo</h4>
+<hr />
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+<form asp-action="Edit" enctype="multipart/form-data">
+    <input type="hidden" asp-for="ComboId" />
+
+    <div class="form-group">
+        <label asp-for="ComboName" class="control-label"></label>
+        <input asp-for="ComboName" class="form-control" />
+        <span asp-validation-for="ComboName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group" style="display:none;">
+        <label asp-for="ComboPrice"></label>
+        <input asp-for="ComboPrice" class="form-control" />
+        <span asp-validation-for="ComboPrice" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ComboDescription" class="control-label"></label>
+        <textarea asp-for="ComboDescription" class="form-control"></textarea>
+        <span asp-validation-for="ComboDescription" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="ImageUrlcombo">Upload Image</label>
+        <input type="file" name="ImageUrlcombo" class="form-control" accept="image/*" />
+        <span asp-validation-for="ImageUrlcombo" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label>Current Image:</label><br />
+        <img src="@Url.Content(Model.ImageUrlcombo)" alt="Current Image" style="max-width: 200px; max-height: 200px;" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Status"></label>
+        <select asp-for="Status" class="form-control" asp-items="Html.GetEnumSelectList<asm_1_Web_DoAn.Models.Status>()">
+            <option value="@Model.Status" selected>@Model.Status</option>
+        </select>
+        <span asp-validation-for="Status" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

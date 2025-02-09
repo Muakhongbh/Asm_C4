@@ -1,0 +1,54 @@
+﻿@model dynamic
+
+<div class="container mt-4">
+    <div class="row">
+        <!-- Phần thông tin sản phẩm hoặc combo -->
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4>Thông tin sản phẩm</h4>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">
+                        @(Model.FoodName ?? Model.ComboName)
+                    </h5>
+                    <img src="@(Model.FoodImageUrl ?? Model.ComboImageUrl)" alt="Hình ảnh" class="img-fluid rounded shadow mb-3" style="max-height: 250px;" />
+                    <p class="card-text"><strong>Loại:</strong> @(Model.FoodName != null ? "Sản phẩm" : "Combo")</p>
+                    <p class="card-text"><strong>Đơn giá:</strong> @Model.UnitPrice.ToString("C")</p>
+                    <p class="card-text"><strong>Số lượng:</strong> @Model.Quantity</p>
+                    <p class="card-text"><strong>Tổng giá:</strong> <span class="text-danger">@Model.TotalPrice.ToString("C")</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Phần trạng thái đơn hàng -->
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-secondary text-white">
+                    <h4>Thông tin đơn hàng</h4>
+                </div>
+                <div class="card-body">
+                    <p class="card-text"><strong>Mã đơn hàng:</strong> @Model.OrderId</p>
+                    <p class="card-text">
+                        <strong>Trạng thái đơn hàng:</strong>
+                        <span class="badge
+                            @(Model.OrderStatus == "Pending" ? "badge-warning" :
+                              Model.OrderStatus == "Approved" ? "badge-info" :
+                              Model.OrderStatus == "Shipped" ? "badge-primary" :
+                              Model.OrderStatus == "Canceled_Order" ? "badge-danger" :
+                              Model.OrderStatus == "Completed" ? "badge-success" : "badge-secondary")">
+                            @Model.OrderStatus
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Nút quay lại -->
+    <div class="row mt-4">
+        <div class="col-12 text-center">
+            <a href="@Url.Action("UserOrders", "Orders")" class="btn btn-primary">Quay lại</a>
+        </div>
+    </div>
+</div>
